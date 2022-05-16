@@ -26,7 +26,7 @@ $mq->queueDeclare("disqueue_send");
 $mq->run(function (Message $mq_message, Channel $mq, Client $bunny) use (&$functions)
 {
 	$data = json_decode($mq_message->content);
-	foreach($functions as $function) $function($data, $mq);
+	foreach($functions as $function) $function($data,$mq);
 	$mq->ack($mq_message);
         return;
 },"disqueue_receive");
