@@ -1,5 +1,8 @@
 <?php
 $functions[] = function ($data, $mq)
 {
-	print_r($data);
+	if($data->t === "MESSAGE_CREATE" && $data->d->content === "ping")
+	{
+		echo("Reply: pong\n");
+	}
 };

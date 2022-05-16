@@ -1,4 +1,5 @@
 <?php
+define("DEBUG",true);
 
 include __DIR__."/vendor/autoload.php";
 
