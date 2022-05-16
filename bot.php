@@ -16,6 +16,7 @@ $connection = [
 
 $bunny = new Client($connection);
 $bunny->connect();
+
 $mq = $bunny->channel();
 $mq->queueDeclare('disqueue_receive');
 $mq->queueDeclare('disqueue_send');
@@ -27,9 +28,8 @@ $discord = new Discord([
 $discord->on('ready', function (Discord $discord) use ($mq) {
 	echo "Bot is ready!", PHP_EOL;
 
-	$discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($mq) {
-		$mq->publish($message,[],'','disqueue_receive');
-		echo "{$message->author->username}: {$message->content}", PHP_EOL;
+	$discord->on('raw', function ($data, Discord $discord) use ($mq) {
+		$mq->publish(json_encode($data),[],'','disqueue_receive');
 	});
 });
 

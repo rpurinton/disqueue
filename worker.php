@@ -15,14 +15,14 @@ $connection = [
 
 $bunny = new Client($connection);
 $bunny->connect();
-$channel = $bunny->channel();
-$channel->queueDeclare('disqueue_receive');
-$channel->queueDeclare('disqueue_send');
+$mq = $bunny->channel();
+$mq->queueDeclare('disqueue_receive');
+$mq->queueDeclare('disqueue_send');
 
-$channel->run(function (Message $message, Channel $channel, Client $bunny)
+$mq->run(function (Message $mq_message, Channel $mq, Client $bunny)
 {
-	$payload = json_decode($message->content);
-	echo "{$payload->author->username}: {$payload->content}", PHP_EOL;
-	$channel->ack($message);
+	$discord_data = json_decode($mq_message->content);
+	print_r($discord_data);
+	$mq->ack($mq_message);
         return;
 },'disqueue_receive');
