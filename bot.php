@@ -16,19 +16,19 @@ $connection = [
 
 $bunny = new Client($connection);
 $bunny->connect();
-$channel = $bunny->channel();
-$channel->queueDeclare('disqueue_receive');
-$channel->queueDeclare('disqueue_send');
+$mq = $bunny->channel();
+$mq->queueDeclare('disqueue_receive');
+$mq->queueDeclare('disqueue_send');
 
 $discord = new Discord([
 	'token' => trim(file_get_contents(__DIR__."/token.txt")),
 ]);
 
-$discord->on('ready', function (Discord $discord) use (&$channel) {
+$discord->on('ready', function (Discord $discord) use (&$mq) {
 	echo "Bot is ready!", PHP_EOL;
 
-	$discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use (&$channel) {
-		$channel->publish($message,[],'','disqueue_receive');
+	$discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use (&$mq) {
+		$mq->publish($message,[],'','disqueue_receive');
 		echo "{$message->author->username}: {$message->content}", PHP_EOL;
 	});
 });
