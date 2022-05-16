@@ -26,23 +26,23 @@ $mq->queueDeclare("disqueue_send");
 
 $loop = Factory::create();
 
-(new Async\Client($loop, $connection))->connect()->then(function (Async\Client $bunny)
-{
-	return $bunny->channel();
-})->then(function (Channel $mq) use ($event)
-{
-	$mq->consume(function (Message $mq_message, Channel $mq, Async\Client $bunny) use ($event)
-	{
-		echo("{$mq_message->content}\n");
-		$mq->ack($mq_message);
-	},"disqueue_send");
-});
-
 $discord = new Discord([
 	"loop" => $loop,
 	"token" => trim(file_get_contents(__DIR__."/token.txt")),
 	'logger' => new Logger('DiscordPHP', [new StreamHandler('php://stdout', Logger::DEBUG)])
 ]);
+
+(new Async\Client($loop, $connection))->connect()->then(function (Async\Client $bunny)
+{
+	return $bunny->channel();
+})->then(function (Bunny\Channel $mq) use ($discord)
+{
+	$mq->consume(function (Bunny\Message $mq_message, Bunny\Channel $mq, Async\Client $bunny) use ($discord)
+	{
+		echo("{$mq_message->content}\n");
+		$mq->ack($mq_message);
+	},"disqueue_send");
+});
 
 $discord->on("ready", function (Discord $discord) use ($mq) {
 	$discord->on("raw", function ($data, Discord $discord) use ($mq) {
