@@ -77,6 +77,10 @@ class ComposerStaticInitc59cff43dda6252d4e741d8e5c70a86a
         array (
             'Carbon\\' => 7,
         ),
+        'B' => 
+        array (
+            'Bunny\\' => 6,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -170,8 +174,8 @@ class ComposerStaticInitc59cff43dda6252d4e741d8e5c70a86a
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Monolog\\' => 
         array (
@@ -197,6 +201,10 @@ class ComposerStaticInitc59cff43dda6252d4e741d8e5c70a86a
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
+        ),
+        'Bunny\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bunny/bunny/src/Bunny',
         ),
     );
 

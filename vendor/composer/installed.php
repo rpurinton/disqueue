@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '029b8c0fa7d09f056d7d586425c9ccf01f8006b2',
+        'reference' => 'e1f30e2521638ebf94d8532ac574f116f1c28bc0',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,18 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '029b8c0fa7d09f056d7d586425c9ccf01f8006b2',
+            'reference' => 'e1f30e2521638ebf94d8532ac574f116f1c28bc0',
+            'dev_requirement' => false,
+        ),
+        'bunny/bunny' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../bunny/bunny',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => '79e0bdff5c9df88407f69739a114109fc9f2375b',
             'dev_requirement' => false,
         ),
         'discord-php/http' => array(

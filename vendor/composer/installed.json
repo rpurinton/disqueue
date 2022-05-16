@@ -1,6 +1,69 @@
 {
     "packages": [
         {
+            "name": "bunny/bunny",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jakubkulhan/bunny.git",
+                "reference": "79e0bdff5c9df88407f69739a114109fc9f2375b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jakubkulhan/bunny/zipball/79e0bdff5c9df88407f69739a114109fc9f2375b",
+                "reference": "79e0bdff5c9df88407f69739a114109fc9f2375b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4",
+                "react/promise": "~2.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5 || ^7.5.20"
+            },
+            "time": "2022-03-16T15:27:32+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Bunny\\": "src/Bunny/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Kulhan",
+                    "email": "jakub.kulhan@gmail.com"
+                }
+            ],
+            "description": "Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library",
+            "keywords": [
+                "AMQP",
+                "bunny",
+                "exchange",
+                "message",
+                "messaging",
+                "queue",
+                "queueing",
+                "rabbit",
+                "rabbitmq",
+                "react",
+                "react-php",
+                "reactphp"
+            ],
+            "support": {
+                "issues": "https://github.com/jakubkulhan/bunny/issues",
+                "source": "https://github.com/jakubkulhan/bunny/tree/master"
+            },
+            "install-path": "../bunny/bunny"
+        },
+        {
             "name": "discord-php/http",
             "version": "v9.0.10",
             "version_normalized": "9.0.10.0",
