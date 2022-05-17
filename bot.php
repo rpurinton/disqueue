@@ -11,19 +11,6 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use React\EventLoop\Factory;
 
-$connection = [
-	"host"      => "127.0.0.1",
-	"vhost"     => "/",
-	"user"      => "rabbit",
-	"password"  => "rabbit",
-];
-
-$bunny = new Client($connection);
-$bunny->connect();
-$mq = $bunny->channel();
-$mq->queueDeclare("disqueue_receive");
-$mq->queueDeclare("disqueue_send");
-
 $loop = Factory::create();
 
 $discord = new Discord([
@@ -32,21 +19,34 @@ $discord = new Discord([
 	'logger' => new Logger('DiscordPHP', [new StreamHandler('php://stdout', Logger::DEBUG)])
 ]);
 
-(new Async\Client($loop, $connection))->connect()->then(function (Async\Client $bunny)
+$bunny_options = [
+	"host"      => "127.0.0.1",
+	"vhost"     => "/",
+	"user"      => "rabbit",
+	"password"  => "rabbit",
+];
+
+(new Async\Client($loop, $bunny_options))->connect()->then(function (Async\Client $bunny_async_client)
 {
-	return $bunny->channel();
-})->then(function (Bunny\Channel $mq) use ($discord)
+	return $bunny_async_client->channel();
+})->then(function (Bunny\Channel $mq_consumer) use ($discord)
 {
-	$mq->consume(function (Bunny\Message $mq_message, Bunny\Channel $mq, Async\Client $bunny) use ($discord)
+	$mq_consumer->consume(function (Bunny\Message $mq_consumed_message, Bunny\Channel $mq_consumer, Async\Client $bunny_async_client) use ($discord)
 	{
-		echo("{$mq_message->content}\n");
-		$mq->ack($mq_message);
+		echo("{$mq_consumed_message->content}\n");
+		$mq_consumer->ack($mq_consumed_message);
 	},"disqueue_send");
 });
 
-$discord->on("ready", function (Discord $discord) use ($mq) {
-	$discord->on("raw", function ($data, Discord $discord) use ($mq) {
-		$mq->publish(json_encode($data),[],"","disqueue_receive");
+$bunny_sync_client = new Client($bunny_options);
+$bunny_sync_client->connect();
+$mq_publisher = $bunny_sync_client->channel();
+$mq_publisher->queueDeclare("disqueue_receive");
+$mq_publisher->queueDeclare("disqueue_send");
+
+$discord->on("ready", function (Discord $discord) use ($mq_publisher) {
+	$discord->on("raw", function ($data, Discord $discord) use ($mq_publisher) {
+		$mq_publisher->publish(json_encode($data),[],"","disqueue_receive");
 	});
 });
 
