@@ -33,6 +33,9 @@ $bunny_options = [
 {
 	$mq_consumer->consume(function (Bunny\Message $mq_consumed_message, Bunny\Channel $mq_consumer, Async\Client $bunny_async_client) use ($discord)
 	{
+		// Here is where we want to send our message back to discord
+		// But How? $discord->send(something); ???
+		// In the meantime, we will just echo it to the console
 		echo("{$mq_consumed_message->content}\n");
 		$mq_consumer->ack($mq_consumed_message);
 	},"disqueue_send");
