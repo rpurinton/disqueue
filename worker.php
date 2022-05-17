@@ -17,14 +17,14 @@ $bunny_options = [
 
 $bunny_client = new Client($bunny_options);
 $bunny_client->connect();
-$mq_consumer = $bunny_client->channel();
-$mq_consumer->queueDeclare("disqueue_receive");
-$mq_consumer->queueDeclare("disqueue_send");
+$mq = $bunny_client->channel();
+$mq->queueDeclare("disqueue_receive");
+$mq->queueDeclare("disqueue_send");
 
-$mq_consumer->run(function (Message $mq_consumed_message, Channel $mq_consumer, Client $bunny_client) use (&$functions)
+$mq->run(function (Message $mq_consumed_message, Channel $mq, Client $bunny_client) use (&$functions)
 {
 	$data = json_decode($mq_consumed_message->content);
-	foreach($functions as $function) $function($data,$mq_consumer);
-	$mq_consumer->ack($mq_consumed_message);
+	foreach($functions as $function) $function($data,$mq);
+	$mq->ack($mq_consumed_message);
         return;
 },"disqueue_receive");
