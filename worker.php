@@ -1,10 +1,8 @@
 <?php
-define("DEBUG",true);
-
 include __DIR__."/vendor/autoload.php";
 
-$modules = array_diff(scandir(__DIR__."/modules"), array("..", "."));
-foreach($modules as $module) require_once(__DIR__."/modules/$module");
+$modules = array_diff(scandir(__DIR__."/modules_enabled"), array("..", "."));
+foreach($modules as $module) require_once(__DIR__."/modules_enabled/$module");
 
 use Bunny\Client;
 use Bunny\Message;

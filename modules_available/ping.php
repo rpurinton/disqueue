@@ -6,5 +6,6 @@ $functions[] = function ($data, $mq)
 		$payload["data"] = $data;
 		$payload["MessageBuilder"] = Discord\Builders\MessageBuilder::new()->setContent("PONG!");
 		$mq->publish(json_encode($payload),[],"","disqueue_send");
+		if(defined("LOG")) echo "[RESPONSE TRIGGERED] ".json_encode($payload["MessageBuilder"]).PHP_EOL;
 	}
 };
